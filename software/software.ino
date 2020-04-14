@@ -153,7 +153,7 @@ void loop(void) {
  */
 
  void sendToEmail(){
-  
+ //from our https://create.arduino.cc/projecthub/xreef/send-email-with-esp8266-and-arduino-d source
      //set up email
     EMailSender emailSend("smtp.account@gmail.com", "password");
 
