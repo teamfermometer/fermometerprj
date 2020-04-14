@@ -36,16 +36,7 @@ OneWire oneWire(ONE_WIRE_BUS);        // Setup a oneWire instance to communicate
                                       //devices (not just Maxim/Dallas temperature ICs)
 DallasTemperature tempSensor(&oneWire);  // Pass our oneWire reference to Dallas Temperature. 
 
-/** 
- *  ARTIK Cloud REST Initialization
-**/
-char server[] = "api.artik.cloud";    // Samsung ARTIK Cloud API Host
-int port = 443;                       // 443 for HTTPS 
-char buf[200];                        // body data to store the JSON to be sent to the ARTIK cloud 
-String deviceID = "fb3c4b37d94d4951b156281cbc6358d1"; // put your device id here created from tutorial 
-String deviceToken = "ecbc0df476734c43b86fc17cee9b3e2c"; // put your device token here created from tutorial
-int sendInterval = 60;                 // send time interval in seconds
-int sendIntervalCounter=0;               // count if we have to send data         
+     
 
 /**
  * pH meter initialization
@@ -152,48 +143,7 @@ void loop(void) {
  * Send Sensor values to api
  */
 
- void sendToAtik(){
-    Serial.println("==========================================="); 
-    Serial.println("We will send these json data"); 
-    //print to json format
-    Serial.println("data: { ");
-    Serial.print("ph: ");
-    Serial.print(pHValue);
-    Serial.print(" , temp: ");
-    Serial.print(celsius);
-    Serial.println("} ");
-    
-    Serial.println("Start sending data"); 
-    String contentType = "application/json"; 
-    String AuthorizationData = "Bearer " + deviceToken; //Device Token 
-    int len = loadBuffer(celsius,pHValue);   
-    Serial.println("Sending temp: "+String(celsius) +" and ph: "+String(pHValue) );  
-    Serial.println("Send POST to ARTIK Cloud API"); 
-    client.beginRequest(); 
-    client.post("/v1.1/messages"); //, contentType, buf 
-    client.sendHeader("Authorization", AuthorizationData); 
-    client.sendHeader("Content-Type", "application/json"); 
-    client.sendHeader("Content-Length", len); 
-    client.endRequest(); 
-    client.print(buf); 
-    
-    // print response from api
-    int statusCode = client.responseStatusCode(); 
-    String response = client.responseBody(); 
-    Serial.println("");
-    if(statusCode==200){
-      digitalWrite(13, HIGH);       // turn on LED
-      delay(500);                  // Make delay fro blink
-      digitalWrite(13, LOW);       // turn on LED
-      Serial.print("Successfully sent data."); 
-    }else{
-      Serial.print("Failed to send data."); 
-    }
-    Serial.print("Status code: "); 
-    Serial.println(statusCode); 
-    Serial.print("Response: "); 
-    Serial.println(response);   
-
+ void sendTo#mail(){
 
      //set up email
     EMailSender emailSend("smtp.account@gmail.com", "password");
