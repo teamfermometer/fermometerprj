@@ -36,7 +36,16 @@ OneWire oneWire(ONE_WIRE_BUS);        // Setup a oneWire instance to communicate
                                       //devices (not just Maxim/Dallas temperature ICs)
 DallasTemperature tempSensor(&oneWire);  // Pass our oneWire reference to Dallas Temperature. 
 
-     
+/** 
+ *  ARTIK Cloud REST Initialization
+**/
+char server[] = "api.artik.cloud";    // Samsung ARTIK Cloud API Host
+int port = 443;                       // 443 for HTTPS 
+char buf[200];                        // body data to store the JSON to be sent to the ARTIK cloud 
+String deviceID = "fb3c4b37d94d4951b156281cbc6358d1"; // put your device id here created from tutorial 
+String deviceToken = "ecbc0df476734c43b86fc17cee9b3e2c"; // put your device token here created from tutorial
+int sendInterval = 60;                 // send time interval in seconds
+int sendIntervalCounter=0;               // count if we have to send data         
 
 /**
  * pH meter initialization
@@ -143,8 +152,8 @@ void loop(void) {
  * Send Sensor values to api
  */
 
- void sendTo#mail(){
-
+ void sendToEmail(){
+  
      //set up email
     EMailSender emailSend("smtp.account@gmail.com", "password");
 
