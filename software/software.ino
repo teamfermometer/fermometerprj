@@ -39,6 +39,9 @@ DallasTemperature tempSensor(&oneWire);  // Pass our oneWire reference to Dallas
 /** 
  *  ARTIK Cloud REST Initialization
 **/
+
+//Likely not necessary at all
+/*
 char server[] = "api.artik.cloud";    // Samsung ARTIK Cloud API Host
 int port = 443;                       // 443 for HTTPS 
 char buf[200];                        // body data to store the JSON to be sent to the ARTIK cloud 
@@ -46,6 +49,7 @@ String deviceID = "fb3c4b37d94d4951b156281cbc6358d1"; // put your device id here
 String deviceToken = "ecbc0df476734c43b86fc17cee9b3e2c"; // put your device token here created from tutorial
 int sendInterval = 60;                 // send time interval in seconds
 int sendIntervalCounter=0;               // count if we have to send data         
+*/
 
 /**
  * pH meter initialization
@@ -138,7 +142,8 @@ void loop(void) {
     
   // check if we need to send
   if(sendIntervalCounter == sendInterval)
-    sendToAtik();
+    //sendToAtik();
+    sendToEmail(); //This obviously will need help
 
   // check status of wifi connection
   status = WiFi.status();
@@ -151,7 +156,7 @@ void loop(void) {
 /*
  * Send Sensor values to api
  */
-
+// This one is the first of our email code
  void sendToEmail(){
  //from our https://create.arduino.cc/projecthub/xreef/send-email-with-esp8266-and-arduino-d source
      //set up email
@@ -203,7 +208,7 @@ void checkTime(){
  Created 2016-8-11
  By youyou from DFrobot <youyou.yu@dfrobot.com>
  ****************************************************/
-  if(serialDataAvailable() > 0)
+  if(serialDataAvailable() > 0) 
   {
       byte modeIndex = uartParse();
       phCalibration(modeIndex);    // If the correct calibration command is received, the calibration function should be called.
@@ -256,9 +261,13 @@ void startWifi(){
 
 
 
+
 /*
  * Buffer to send on API
 */
+
+// Never used elsewhere, plus the loadbuffer seems like its for artik api
+/*
 int loadBuffer(float temp, float ph ) {   
   StaticJsonBuffer<200> jsonBuffer; // reserve spot in memory 
   JsonObject& root = jsonBuffer.createObject(); // create root objects 
@@ -270,6 +279,8 @@ int loadBuffer(float temp, float ph ) {
   root.printTo(buf, sizeof(buf)); // JSON-print to buffer 
   return (root.measureLength()); // also return length 
 } 
+*/
+
 
 /***************************************************
  The fllowing formula uses software solution to calibration the ph meter, not the potentiometer. So it is more easy to use and calibrate.
